@@ -21,7 +21,7 @@ class MiniRedis(redis.StrictRedis):
 
 	def load_json_fixed_schema(self, key):
 		index, *values = msgpack.loads(self.get(key), encoding='utf8')
-		schema = json.loads(self.zrangebyscore(SCHEMAS_KEY, index, index)[0].decode('utf8'))
+		schema = msgpack.loads(self.zrangebyscore(SCHEMAS_KEY, index, index)[0], encoding='utf8')
 		return apply_schema_on_values(schema, values)
 
 def apply_schema_on_values(schema, values):
@@ -29,5 +29,4 @@ def apply_schema_on_values(schema, values):
 
 def get_schema(obj):
 	# support top level keys schema only for now
-	return json.dumps(sorted(obj.keys()))
-	# return json.dumps({k: None for k in obj.keys()}, sort_keys=True)
+	return msgpack.dumps(sorted(obj.keys()))
