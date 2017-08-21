@@ -10,3 +10,4 @@ A lib to store structured data in redis using minimal memory
 
 ## Todo:
 - Use a `features needed` framework for choosing save/load strategy
+- Support pipelines
